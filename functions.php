@@ -31,6 +31,13 @@
         return true;
     }
 
+    function getArticle(Pdo $dbConnection, $articleId) {
+        $articleId = addslashes($articleId);
+        $sql = "SELECT * FROM article WHERE articleId = ? {$articleId}";
+
+        return $dbConnection->query($sql)->fetchAll(\Pdo::FETCH_ASSOC);
+    }
+
     function getArticles(Pdo $dbConnection) {
         $sql = "SELECT * FROM article";
 

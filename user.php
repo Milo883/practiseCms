@@ -8,6 +8,8 @@
     define('ACTION_ARTICLE_SAVED', 'articleSaved');
     define('ACTION_LOGOUT', 'logout');
 
+
+
 //    ini_set('display_errors', 1);
 //    error_reporting(E_ALL);
 
@@ -22,6 +24,7 @@
 	}
 
     $action = 'dashboard';
+    $articles = [];
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             case ACTION_DASHBOARD:
@@ -138,7 +141,7 @@ switch ($action) {
     case ACTION_DASHBOARD:
         echo '<ul>';
         foreach ($articles as $article) {
-            echo '<li><a href="/test/user.php?action=editArticle&articleId=' . $article['title'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
+            echo '<li><a href="/test/user.php?action=editArticle&articleId=' . $article['articleId'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
         }
         echo '</ul>';
 
