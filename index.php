@@ -11,7 +11,7 @@
 	}
 
 	if (isloggedIn()) {
-		header("Location: /cms/Skolica/user.php");
+		header("Location: /test/user.php");
 	}
 	
 ?>

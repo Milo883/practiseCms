@@ -6,6 +6,10 @@
     define('ACTION_ARTICLE_FORM', 'articleForm');
     define('ACTION_INSERT_ARTICLE', 'insertArticle');
     define('ACTION_ARTICLE_SAVED', 'articleSaved');
+    define('ACTION_LOGOUT', 'logout');
+
+//    ini_set('display_errors', 1);
+//    error_reporting(E_ALL);
 
     include("bootstrap.php");
 
@@ -14,7 +18,7 @@
 	}
 	
 	if(!isLoggedIn()) {
-		header('Location: /Skolica/index.php?msg=noPermissions');
+		header('Location: /test/index.php?msg=noPermissions');
 	}
 
     $action = 'dashboard';
@@ -23,7 +27,7 @@
             case ACTION_DASHBOARD:
                 $action = ACTION_DASHBOARD;
 
-                var_dump(getArticles($db));
+                $articles = getArticles($db);
 
                 break;
 
@@ -37,10 +41,14 @@
 
                 $keyword = $_GET['search'];
 
-                if (searchUser($keyword)) {
-                    $result = 'korisnik sa username-om: ' . $keyword . ' je pronadjen';
+                if (strlen($keyword) < 3) {
+                    $result = 'Input nije validan.';
                 } else {
-                    $result = 'korisnik sa username-om: ' . $keyword . ' nije pronadjen';
+                    if (searchUsers($keyword)) {
+                        $result = 'korisnik sa username-om: ' . $keyword . ' je pronadjen';
+                    } else {
+                        $result = 'korisnik sa username-om: ' . $keyword . ' nije pronadjen';
+                    }
                 }
 
                 break;
@@ -51,6 +59,8 @@
                 break;
 
             case ACTION_INSERT_ARTICLE:
+                $action = ACTION_ARTICLE_SAVED;
+
                 try {
                     persistArticle($db, $_POST);
                 } catch (\Exception $e) {
@@ -58,7 +68,11 @@
                     die();
                 }
 
-                $action = ACTION_ARTICLE_SAVED;
+                break;
+
+            case ACTION_LOGOUT:
+                logOut();
+                header('Location: /test/index.php');
 
                 break;
 
@@ -77,9 +91,10 @@
 <body>
 
     <ul>
-        <li><a href="/cms/Skolica/user.php?action=<?php echo ACTION_DASHBOARD ?>" title="Dashboard">Dashboard</a></li>
-        <li><a href="/cms/Skolica/user.php?action=<?php echo ACTION_SEARCH_FORM ?>" title="Search">Search</a></li>
-        <li><a href="/cms/Skolica/user.php?action=<?php echo ACTION_ARTICLE_FORM ?>" title="Search">Insert article</a></li>
+        <li><a href="/test/user.php?action=<?php echo ACTION_DASHBOARD ?>" title="Dashboard">Dashboard</a></li>
+        <li><a href="/test/user.php?action=<?php echo ACTION_SEARCH_FORM ?>" title="Search">Search</a></li>
+        <li><a href="/test/user.php?action=<?php echo ACTION_ARTICLE_FORM ?>" title="Search">Insert article</a></li>
+        <li><a href="/test/user.php?action=<?php echo ACTION_LOGOUT ?>" title="Logout">Logout</a></li>
     </ul>
 
 <?php
@@ -118,6 +133,15 @@ switch ($action) {
 ?>
         <p>Vest je uspeshno snimljena!!!!</p>
 <?php
+        break;
+
+    case ACTION_DASHBOARD:
+        echo '<ul>';
+        foreach ($articles as $article) {
+            echo '<li><a href="/test/user.php?action=editArticle&articleId=' . $article['title'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
+        }
+        echo '</ul>';
+
         break;
 
 }

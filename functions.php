@@ -3,7 +3,6 @@
 	//populateStorage();
 	//die();
 
-
     /**
      * @param $params
      *
@@ -33,7 +32,7 @@
     }
 
     function getArticles(Pdo $dbConnection) {
-        $sql = "SELECT * FROM article where articleId = ";
+        $sql = "SELECT * FROM article";
 
         return $dbConnection->query($sql)->fetchAll(\Pdo::FETCH_ASSOC);
     }
@@ -55,16 +54,25 @@
 		}
 		return false;
 	}
-	function searchUser($keyword) {
+
+	function searchUsers($keyword) {
 		$users = getUsers();
 		foreach($users as $user){
-			if ($keyword === $user->username) {
-				return true;
-			}
+            if (findUser($user, $keyword)) {
+                return true;
+            }
 		}
 		
 		return false;
 	}
+
+	function findUser($user, $keyword) {
+        if (strstr($user->username, strtolower($keyword))) {
+            return true;
+        }
+        return false;
+    }
+
 
 	function logIn($username, $password) {
 		$users = getUsers();
