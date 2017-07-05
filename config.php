@@ -8,3 +8,4 @@ return [
         'name' => 'test',
     ]
 ];
+?>

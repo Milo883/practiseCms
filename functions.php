@@ -18,6 +18,7 @@
             var_dump($e->getCode());
             var_dump($e->getTrace());
             die();
+
         }
 
         return $pdo;
@@ -38,14 +39,14 @@
         return $dbConnection->query($sql)->fetchAll(\Pdo::FETCH_ASSOC);
     }
 
-    function getArticles(Pdo $dbConnection) {
+    function getArticle(Pdo $dbConnection) {
         $sql = "SELECT * FROM article";
 
         return $dbConnection->query($sql)->fetchAll(\Pdo::FETCH_ASSOC);
     }
 
     function saveArticleToDb(Pdo $dbConnection, $params) {
-        $sql = "INSERT INTO article VALUES(null, '{$params['title']}', '{$params['body']}', '{$params['description']}', NOW())";
+        $sql = "INSERT INTO article VALUES(NULL , '{$params['title']}', '{$params['body']}', '{$params['description']}', NOW())";
 
         return $dbConnection->exec($sql);
     }
@@ -106,23 +107,29 @@
 		$users = array(
 			['username' => 'admin', 'password' => 'test'],
 			['username' => 'milo', 'password' => 'milo'],
-			['username' => 'beka', 'password' => 'beka']
 		);
 		
 		file_put_contents('storage.dat', json_encode($users));
 	}
 
-	function saveUserToDb(Pdo $dbConnection, $params){
-	    $sql = "INSERT INTO userid VALUES (null, '{$params['username']}', '{$params['password']}', '{$params['email']}', NOW())";
-
-	    return $dbConnection->exec($sql);
-    }
-
-    function insertForm(Pdo $dbConnection, $params) {
-	    if (!saveArticleToDb($dbConnection, $params)) {
-	        throw new \Exception('user nije sacuvan,pokusajte ponovo');
-        }
+    function persistUser(Pdo $dbConnection, $params){
+        if (!saveUserToDb($dbConnection, $params)) {
+            throw new \Exception('user nije sacuvan,pokusajte ponovo');
+         }
 
         return true;
     }
+
+    function saveUserToDb(Pdo $dbConnection, $params){
+        $sql = "INSERT INTO userId VALUES (NULL ,'{$params['username']}', '{$params['password']}', '{$params['email']}', NOW())";
+
+        return $dbConnection->exec($sql);
+    }
+
+
+
+
+
+
+
 ?>

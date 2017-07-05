@@ -91,9 +91,9 @@
                 $action = ACTION_USER_SAVED;
 
                 try{
-                    saveUserToDb($db, $_POST);
+                    persistUser($db, $_POST);
                 }catch (\Exception $e) {
-                    echo 'doslo je do greske pri snimanju u bazu';
+                    echo 'doslo je do greske pokusajte ponovo';
                     die();
                 }
 
@@ -138,6 +138,7 @@ switch ($action) {
         ?>
         <p><?= $result ?></p>
         <?php
+
         break;
 
     case ACTION_ARTICLE_FORM:
@@ -162,9 +163,9 @@ switch ($action) {
     case ACTION_DASHBOARD:
         echo '<ul>';
         foreach ($articles as $article) {
-            echo '<li><a href="/practiceCms/user.php?action=editArticle&articleId=' . $article['articleId'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
-        }
-        echo '</ul>';
+            echo '<li><a href="/practiceCms/user.php?action=editArticle&articleId" =' . $article['articleId'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>'
+
+            echo '</ul>';
 
         break;
 
@@ -184,8 +185,6 @@ switch ($action) {
 }
 ?>
     <p>User je sacuvan</p>
-
-
 
 
 </body>

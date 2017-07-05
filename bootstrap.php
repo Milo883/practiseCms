@@ -10,6 +10,7 @@ include("functions.php");
 
 $db = connectToDatabase($config['db']);
 
+?>
 
 
 

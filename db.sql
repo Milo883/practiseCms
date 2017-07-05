@@ -3,5 +3,6 @@ CREATE TABLE `new_table` (
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `createdAt` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt` TIMESTAMP NULL DEFAULT userid CURRENT_TIMESTAMP,
   PRIMARY KEY (`userId`));
+

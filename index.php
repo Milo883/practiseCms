@@ -20,7 +20,7 @@
 	<head>
 	<title>Skolica</title>
 	<meta charset="UTF-8">
-	<link rel="styleseet" type="text/css" href="log_in.css">
+	<link rel="styleseet" type="text/css" href="log_in.css" >
 	</head>
     <body>
 <?php
@@ -32,8 +32,8 @@
 
 <form action="" method="POST">
 
-<input type="text" name="username" />
-<input type="password" name="password" />
+<input type="text" name="username" /><br>
+<input type="password" name="password" /><br>
 
 <input type="submit" value="Login" />
 
