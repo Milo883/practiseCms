@@ -25,7 +25,7 @@
 
     function persistArticle(Pdo $dbConnection, $params) {
         if (!saveArticleToDb($dbConnection, $params)) {
-            throw new \Exception('Could not save item.');
+            throw new \Exception('artikl nije sacuvan, pokusajte ponovo.');
         }
 
         return true;
@@ -105,9 +105,24 @@
 	function populateStorage() {
 		$users = array(
 			['username' => 'admin', 'password' => 'test'],
-			['username' => 'milo', 'password' => 'milo']
+			['username' => 'milo', 'password' => 'milo'],
+			['username' => 'beka', 'password' => 'beka']
 		);
 		
 		file_put_contents('storage.dat', json_encode($users));
 	}
+
+	function saveUserToDb(Pdo $dbConnection, $params){
+	    $sql = "INSERT INTO userid VALUES (null, '{$params['username']}', '{$params['password']}', '{$params['email']}', NOW())";
+
+	    return $dbConnection->exec($sql);
+    }
+
+    function insertForm(Pdo $dbConnection, $params) {
+	    if (!saveArticleToDb($dbConnection, $params)) {
+	        throw new \Exception('user nije sacuvan,pokusajte ponovo');
+        }
+
+        return true;
+    }
 ?>

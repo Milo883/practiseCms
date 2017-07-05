@@ -11,7 +11,7 @@
 	}
 
 	if (isloggedIn()) {
-		header("Location: /test/user.php");
+		header("Location: /practiceCms/user.php");
 	}
 	
 ?>
@@ -22,6 +22,7 @@
 	<meta charset="UTF-8">
 	<link rel="styleseet" type="text/css" href="log_in.css">
 	</head>
+    <body>
 <?php
 	
 	if(isset($_GET['msg']) && (strlen($_GET['msg'])> 0 )) {

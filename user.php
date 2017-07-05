@@ -7,6 +7,9 @@
     define('ACTION_INSERT_ARTICLE', 'insertArticle');
     define('ACTION_ARTICLE_SAVED', 'articleSaved');
     define('ACTION_LOGOUT', 'logout');
+    define('ACTION_USER_FORM', 'userForm');
+    define('ACTION_INSERT_USER', 'insertUser');
+    define('ACTION_USER_SAVED', 'userSaved');
 
 
 
@@ -20,7 +23,7 @@
 	}
 	
 	if(!isLoggedIn()) {
-		header('Location: /test/index.php?msg=noPermissions');
+		header('Location: /practiceCms/index.php?msg=noPermissions');
 	}
 
     $action = 'dashboard';
@@ -75,7 +78,24 @@
 
             case ACTION_LOGOUT:
                 logOut();
-                header('Location: /test/index.php');
+                header('Location: /practiceCms/index.php');
+
+                break;
+
+            case ACTION_USER_FORM:
+                $action = ACTION_USER_FORM;
+
+                break;
+
+            case ACTION_INSERT_USER:
+                $action = ACTION_USER_SAVED;
+
+                try{
+                    saveUserToDb($db, $_POST);
+                }catch (\Exception $e) {
+                    echo 'doslo je do greske pri snimanju u bazu';
+                    die();
+                }
 
                 break;
 
@@ -94,62 +114,77 @@
 <body>
 
     <ul>
-        <li><a href="/test/user.php?action=<?php echo ACTION_DASHBOARD ?>" title="Dashboard">Dashboard</a></li>
-        <li><a href="/test/user.php?action=<?php echo ACTION_SEARCH_FORM ?>" title="Search">Search</a></li>
-        <li><a href="/test/user.php?action=<?php echo ACTION_ARTICLE_FORM ?>" title="Search">Insert article</a></li>
-        <li><a href="/test/user.php?action=<?php echo ACTION_LOGOUT ?>" title="Logout">Logout</a></li>
+        <li><a href="/practiceCms/user.php?action=<?php echo ACTION_DASHBOARD ?>" title="Dashboard">Dashboard</a></li>
+        <li><a href="/practiceCms/user.php?action=<?php echo ACTION_SEARCH_FORM ?>" title="Search">Search</a></li>
+        <li><a href="/practiceCms/user.php?action=<?php echo ACTION_ARTICLE_FORM ?>" title="Search">Insert article</a></li>
+        <li><a href="/practiceCms/user.php?action=<?php echo ACTION_LOGOUT ?>" title="Logout">Logout</a></li>
+        <li><a href="/practiceCms/user.php?action=<?php echo ACTION_INSERT_USER ?>" title="SigneUp">SigneUp</a></li>
     </ul>
 
 <?php
 
 switch ($action) {
     case ACTION_SEARCH_FORM:
-?>
-    <form action="" method="get">
-        <input type="text" name="search" placeholder="Pretraga" />
-        <input type="submit" value="Pretraga" />
+        ?>
+        <form action="" method="get">
+            <input type="text" name="search" placeholder="Pretraga"/>
+            <input type="submit" value="Pretraga"/>
 
-        <input type="hidden" name="action" value="search" />
-    </form>
-<?php
+            <input type="hidden" name="action" value="search"/>
+        </form>
+        <?php
         break;
     case ACTION_SEARCH:
-?>
-    <p><?=$result?></p>
-<?php
+        ?>
+        <p><?= $result ?></p>
+        <?php
         break;
 
     case ACTION_ARTICLE_FORM:
-?>
-    <form action="?action=<?=ACTION_INSERT_ARTICLE?>" method="post">
-        <input type="text" name="title" placeholder="Title" />
-        <input type="text" name="body" placeholder="Body" />
-        <input type="text" name="description" placeholder="Description" />
+        ?>
+        <form action="?action=<?= ACTION_INSERT_ARTICLE ?>" method="post">
+            <input type="text" name="title" placeholder="Title"/>
+            <input type="text" name="body" placeholder="Body"/>
+            <input type="text" name="description" placeholder="Description"/>
 
-        <input type="submit" value="Snimi" />
-    </form>
+            <input type="submit" value="Snimi"/>
+        </form>
 
-<?php
+        <?php
         break;
 
     case ACTION_ARTICLE_SAVED:
-?>
+        ?>
         <p>Vest je uspeshno snimljena!!!!</p>
-<?php
+        <?php
         break;
 
     case ACTION_DASHBOARD:
         echo '<ul>';
         foreach ($articles as $article) {
-            echo '<li><a href="/test/user.php?action=editArticle&articleId=' . $article['articleId'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
+            echo '<li><a href="/practiceCms/user.php?action=editArticle&articleId=' . $article['articleId'] . '">' . $article['title'] . ' - ' . date('d/m/Y H:i', strtotime($article['createdAt'])) . '</a></li>';
         }
         echo '</ul>';
 
         break;
 
-}
 
+    case ACTION_USER_FORM:
+        ?>
+        <form action="?action=<?= ACTION_INSERT_USER ?>" method="post">
+            <input type="text" name="username" placeholder="Username"/>
+            <input type="text" name="password" placeholder="Password"/>
+            <input type="email" name="email" placeholder="Email"/>
+        </form>
+        <?php
+
+        break;
+
+    case ACTION_USER_SAVED:
+}
 ?>
+    <p>User je sacuvan</p>
+
 
 
 
